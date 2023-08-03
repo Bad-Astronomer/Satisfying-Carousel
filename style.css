@@ -1,0 +1,50 @@
+html{
+    box-sizing: border-box;
+}
+body{
+    margin: 0px;
+    padding: 0px;
+}
+*{
+    font-family: "Space Mono", monospace;
+}
+
+.container{
+    height: 100vh;
+    width: 100vw;
+    background: rgb(20, 20, 20);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#carousel-container{
+    height: 600px;
+    width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    cursor: grab;
+}
+#carousel-container::-webkit-scrollbar{
+    display: none;
+}
+
+.card{
+    height: 300px;
+    background: rgba(150, 160, 180, 0.5);
+    /* pointer-events: none; */
+    position: relative;
+    left: 50vw;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+/* .card:hover{
+    filter: saturate(1);
+}
+
+.card img{
+    height: 100%;
+    width: auto;
+} */
