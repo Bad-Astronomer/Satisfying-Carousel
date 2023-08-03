@@ -1,14 +1,7 @@
+// import myImages from config;
+
 const cards = document.getElementsByClassName("card");
 const container = document.getElementById("carousel-container");
-
-let fps = 30;
-let cardWidth = 75;
-let cardCount = 20;
-
-let maxSpeed = 100;
-let maxProximity = 400;
-let maxScale = 2;
-let maxPerspective = 200;
 
 let click = false;
 let drag = false;
@@ -36,12 +29,13 @@ for(let i = 0; i < cardCount; i++){
     card.style.margin = `50px ${cardWidth/10}px`;
     // card.style.background = `url(https://source.unsplash.com/a-dirt-road-in-the-middle-of-a-desert-9MqLBJvQAL8)`
 
-    // const image = document.createElement("img");
-    // image.src = "https://source.unsplash.com/a-dirt-road-in-the-middle-of-a-desert-9MqLBJvQAL8";
-    // image.width = cardWidth;
-    // card.appendChild(image);
+    const image = document.createElement("img");
+    image.src = `${myImages[i].url}`;
+    image.width = cardWidth;
+    image.setAttribute("draggable", "false");
+    card.appendChild(image);
 
-    // card.style.filter = "saturate(0) brightness(0.75)";
+    card.style.filter = "saturate(0) brightness(0.75)";
 }
 
 // window.addEventListener("load", () => {intro()});
@@ -100,7 +94,7 @@ mouseInterval = setInterval(() => {
             let scroll = mouseStartX - currentCords[0];
             let offset = card.getAttribute("position") - scroll;
             
-            let [scale, rotate] = normalize(cursorSpeed[0], proximity);
+            let [scale, rotate, color] = normalize(cursorSpeed[0], proximity);
             let direction = -1*Math.sign(proximity);
 
             card.animate(
@@ -112,6 +106,7 @@ mouseInterval = setInterval(() => {
             card.animate(
                 {
                     scale: `1 ${scale}`,
+                    filter: `saturate(${color}) brightness(1)`,
                     // transform: `prespective(${maxPerspective}px) rotateY(${direction*rotate}deg)`,
                     transform: `perspective(${maxPerspective}px) rotateY(${rotate*direction}deg)`,
                 },
@@ -126,6 +121,7 @@ mouseInterval = setInterval(() => {
                 {
                     scale: "1",
                     transform: `perspective(${maxPerspective}px) rotateY(0deg)`,
+                    filter: `saturate(0) brightness(0.75)`,
                 },
                 {duration: 500});
         }
@@ -161,12 +157,13 @@ const normalize = (speed, proximity) => {
     proximity = 1 - proximity;
     
     // scale = (bulge params) => (1 - maxScale)
+    let color = Math.min(speed * proximity * 2, 1);
     let scale = speed * proximity * (maxScale - 1);
     scale += 1;
     
     proximity = 0.5 - Math.abs(proximity - 0.5);
     let rotate = 45 * proximity * speed;
 
-    return [scale, rotate];
+    return [scale, rotate, color];
 }
 
