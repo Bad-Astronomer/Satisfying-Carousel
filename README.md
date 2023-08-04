@@ -8,3 +8,5 @@ Works on desktop with mouse drag
 3. Mouse scroll control  
 5. Touch control for mobile  
 6. Mobile integration  
+
+### Reference: https://aristidebenoist.com/
