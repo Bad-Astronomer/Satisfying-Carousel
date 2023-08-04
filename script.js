@@ -27,13 +27,14 @@ for(let i = 0; i < cardCount; i++){
 
     card.style.minWidth = `${cardWidth}px`;
     card.style.margin = `50px ${cardWidth/10}px`;
-    // card.style.background = `url(https://source.unsplash.com/a-dirt-road-in-the-middle-of-a-desert-9MqLBJvQAL8)`
+    if(!devMode){
+        card.style.background = `url(${myImages[i].url})`;
+    }
 
-    const image = document.createElement("img");
-    image.src = `${myImages[i].url}`;
-    image.width = cardWidth;
-    image.setAttribute("draggable", "false");
-    card.appendChild(image);
+    // const image = document.createElement("img");
+    // image.src = `${myImages[i].url}`;
+    // image.setAttribute("draggable", "false");
+    // card.appendChild(image);
 
     card.style.filter = "saturate(0) brightness(0.75)";
 }
@@ -85,13 +86,13 @@ mouseInterval = setInterval(() => {
     prevCords = [prevEvent.clientX, prevEvent.clientY];
     // drag ? console.log(currentCords) : "";
     cursorSpeed = [currentCords[0] - prevCords[0], prevCords[1] - currentCords[1]];
+    let scroll = mouseStartX - currentCords[0];
 
-    Array.from(cards).forEach((card, index) => {
+    Array.from(cards).forEach((card) => {
         if(drag){
             let position = card.getBoundingClientRect().x;
             let proximity = (window.innerWidth / 2) - position;
 
-            let scroll = mouseStartX - currentCords[0];
             let offset = card.getAttribute("position") - scroll;
             
             let [scale, rotate, color] = normalize(cursorSpeed[0], proximity);
@@ -106,7 +107,7 @@ mouseInterval = setInterval(() => {
             card.animate(
                 {
                     scale: `1 ${scale}`,
-                    filter: `saturate(${color}) brightness(1)`,
+                    filter: `saturate(${color}) brightness(${(color*0.25) + 0.75})`,
                     // transform: `prespective(${maxPerspective}px) rotateY(${direction*rotate}deg)`,
                     transform: `perspective(${maxPerspective}px) rotateY(${rotate*direction}deg)`,
                 },
@@ -157,8 +158,9 @@ const normalize = (speed, proximity) => {
     proximity = 1 - proximity;
     
     // scale = (bulge params) => (1 - maxScale)
-    let color = Math.min(speed * proximity * 2, 1);
-    let scale = speed * proximity * (maxScale - 1);
+    let flatProximity = Math.min(proximity * maxFlatten, 1);
+    let color = Math.min(speed * flatProximity * 2, 1);
+    let scale = speed * flatProximity * (maxScale - 1);
     scale += 1;
     
     proximity = 0.5 - Math.abs(proximity - 0.5);

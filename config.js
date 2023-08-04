@@ -2,11 +2,13 @@
 const cardWidth = 75;
 const cardCount = 20;
 
-const maxSpeed = 100;
-
-const maxProximity = 400;
+const maxSpeed = 150;
+const maxProximity = 500;
+const maxFlatten = 1.5;
 const maxScale = 2;
 const maxPerspective = 200;
+
+const devMode = false;
 
 const myImages = [
     {
